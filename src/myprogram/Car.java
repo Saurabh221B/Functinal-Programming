@@ -52,4 +52,41 @@ import java.util.List;
                 ", trunkContents=" + trunkContents +
                 '}';
     }
+    /*
+    we have moved criterion method in Car class since they are related to Car object. We have declared this classes as static since criteria is related as a concept to a class Car amd not to particular car instance
+     */
+     public static CarCriteria getRedCarCriteria(){
+         return  RED_CAR_CRITERIA;
+     }
+     private static final CarCriteria RED_CAR_CRITERIA=new CarCriteria(){
+    // private static class RedCarCarCriteria implements CarCriteria {
+
+         @Override
+         public boolean test(Car c) {
+             return c.color.equals("Red");
+         }
+     };
+//     private static final RedCarCarCriteria RED_CAR_CRITERIA=new RedCarCarCriteria();
+//     private static class RedCarCarCriteria implements CarCriteria {
+//
+//         @Override
+//         public boolean test(Car c) {
+//             return c.color.equals("Red");
+//         }
+//     }
+     public static CarCriteria getGasLevelCarCriteria(int threshold){
+         return new GasLevelCarCarCriteria(threshold);
+     }
+     private static class GasLevelCarCarCriteria implements CarCriteria {
+         private int  threshold;
+
+         public GasLevelCarCarCriteria(int threshold) {
+             this.threshold = threshold;
+         }
+
+         @Override
+         public boolean test(Car c) {
+             return c.gasLevel>=threshold;
+         }
+     }
 }

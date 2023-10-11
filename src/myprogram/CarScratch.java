@@ -11,6 +11,22 @@ class PassengerCountOrder implements Comparator<Car>{
     }
 }
 
+/*passing behavior as an argument to make our filtering mechanism more generalize
+Now it is possible for the caller to pass specific filtering mechanism impl to our selection method.
+ */
+
+interface Criteria{
+  boolean test(Car c);
+}
+class RedCarCriteria implements Criteria{
+
+    @Override
+    public boolean test(Car c) {
+        return c.getColor().equals("Red");
+    }
+}
+
+
 public class CarScratch {
     public static void showAll(List<Car> ls){
         for(Car c : ls){
@@ -18,24 +34,34 @@ public class CarScratch {
         }
         System.out.println("-------------------------------------");
     }
-    public static List<Car> getColoredCars(Iterable<Car>in, String color){
+    public static List<Car> getCarsByCriteria(Iterable<Car>in, Criteria cr){
         List<Car>output=new ArrayList<>();
         for(Car c : in){
-            if(c.getColor().equals(color)){
+            //Here decison making is based on object(wrapping the behaviour needed to take desicion) criteria which is pass by caller as argument
+            if(cr.test(c)){
                 output.add(c);
             }
         }
         return output;
     }
-    public static List<Car> getCarsByGasLevel(Iterable<Car>in, int gasLevel){
-        List<Car>output=new ArrayList<>();
-        for(Car c : in){
-            if(c.getGasLevel()>=gasLevel){
-                output.add(c);
-            }
-        }
-        return output;
-    }
+//    public static List<Car> getColoredCars(Iterable<Car>in, String color){
+//        List<Car>output=new ArrayList<>();
+//        for(Car c : in){
+//            if(c.getColor().equals(color)){
+//                output.add(c);
+//            }
+//        }
+//        return output;
+//    }
+//    public static List<Car> getCarsByGasLevel(Iterable<Car>in, int gasLevel){
+//        List<Car>output=new ArrayList<>();
+//        for(Car c : in){
+//            if(c.getGasLevel()>=gasLevel){
+//                output.add(c);
+//            }
+//        }
+//        return output;
+//    }
     public static void main(String[] args) {
         List<Car> cars= Arrays.asList(
                 Car.withGasColorPassenger(6,"Red","Saurabh","csp","adi"),
@@ -48,8 +74,8 @@ public class CarScratch {
 	// write your code here
 
         showAll(cars);
-        showAll(getColoredCars(cars,"Red"));
-        cars.sort(new PassengerCountOrder());
+        showAll(getCarsByCriteria(cars,new RedCarCriteria()));
+        //cars.sort(new PassengerCountOrder());
         showAll(cars);
     }
 }

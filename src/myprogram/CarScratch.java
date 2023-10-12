@@ -98,10 +98,14 @@ public class CarScratch {
 	// write your code here
 
         showAll(cars);
-        showAll(getByCriteria(cars,Car.getRedCarCriteria()));
-        showAll(getByCriteria(cars,Car.getGasLevelCarCriteria(4)));
-        cars.sort( Car.getGasLevelOrderComparator());
-        showAll(cars);
-        showAll(getByCriteria(cars,Car.getFourPassengerCarCriteria()));
+//        showAll(getByCriteria(cars,Car.getRedCarCriteria()));
+//        showAll(getByCriteria(cars,Car.getGasLevelCarCriteria(4)));
+//        cars.sort( Car.getGasLevelOrderComparator());
+//        showAll(cars);
+//        showAll(getByCriteria(cars,Car.getFourPassengerCarCriteria()));
+//        showAll(getByCriteria(cars,Car.getGasLevelCarCriteria(4)));
+        Criteria<Car> redCarCriteria=Car.getRedCarCriteria();
+       showAll(getByCriteria(cars,Car.negate(redCarCriteria)));
+        showAll(getByCriteria(cars,Car.or(c->c.getColor().equals("Red"),c -> c.getColor().equals("Black"))));
     }
 }

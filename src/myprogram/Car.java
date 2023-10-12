@@ -1,11 +1,8 @@
 package myprogram;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
- class Car {
+class Car {
     private final int gasLevel;
     private final String color;
     private final List<String> passengers;
@@ -59,10 +56,28 @@ import java.util.List;
      public static Criteria getRedCarCriteria(){
          return  RED_CAR_CRITERIA;
      }
+     private static final Criteria<Car> RED_CAR_CRITERIA= (Car c)->  c.color.equals("Red");
      public static Criteria<Car> getFourPassengerCarCriteria(){
          return c -> c.getPassengers().size()==4;
      }
-     private static final Criteria<Car> RED_CAR_CRITERIA= (Car c)->  c.color.equals("Red");
+     public static Criteria<Car> getColorCriteria(String...color){
+         HashSet<String>colorSet=new HashSet<>(Arrays.asList(color));
+         return  c -> colorSet.contains(c.color);
+     }
+     //trying to derive new behavior by passing existing one as an argument to method parameter
+    public static <E>Criteria<E> negate(Criteria<E> cri){
+        return  c ->!cri.test(c);
+    }
+    public static <E>Criteria<E> and(Criteria<E> first, Criteria<E> second){
+
+        return  c -> first.test(c) && second.test(c);
+    }
+    public static <E>Criteria<E> or(Criteria<E> first, Criteria<E> second){
+
+        return  c -> first.test(c) || second.test(c);
+    }
+
+
 
 //     private static final CarCriteria RED_CAR_CRITERIA=new CarCriteria(){
 //         // private static class RedCarCarCriteria implements CarCriteria {
@@ -80,22 +95,27 @@ import java.util.List;
 //             return c.color.equals("Red");
 //         }
 //     }
-     public static Criteria getGasLevelCarCriteria(int threshold){
-         return new GasLevelCarCriteria(threshold);
-     }
-     private static class GasLevelCarCriteria implements Criteria<Car> {
-         private int  threshold;
 
-         public GasLevelCarCriteria(int threshold) {
-             this.threshold = threshold;
-         }
+//         return new GasLevelCarCriteria(threshold);
+//     }
+//     private static class GasLevelCarCriteria implements Criteria<Car> {
+//         private int  threshold;
+//
+//         public GasLevelCarCriteria(int threshold) {
+//             this.threshold = threshold;
+//         }
+//
+//         @Override
+//         public boolean test(Car c) {
+//             return c.gasLevel>=threshold;
+//         }
+//
+//     }
+public static Criteria<Car> getGasLevelCarCriteria(int threshold) {
+    return (c) -> c.gasLevel >= threshold;
+    //variable used in lamda expression for example int threshhld in this case shoud be final..
+        }
 
-         @Override
-         public boolean test(Car c) {
-             return c.gasLevel>=threshold;
-         }
-
-     }
 
      public static Comparator<Car> getGasLevelOrderComparator(){
          return GAS_LEVEL_ORDER_COMPARATOR;

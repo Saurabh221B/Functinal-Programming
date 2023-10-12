@@ -10,6 +10,15 @@ class PassengerCountOrder implements Comparator<Car>{
         return o1.getPassengers().size()-o2.getPassengers().size();
     }
 }
+//class GasLevelOrderComparator implements Comparator<Car>{
+//
+//    @Override
+//    public int compare(Car o1, Car o2) {
+//        return o1.getGasLevel()- o2.getGasLevel();
+//
+//        }
+//    }
+
 
 /*passing behavior as an argument to make our filtering mechanism more generalize
 Now it is possible for the caller to pass specific filtering mechanism impl to our selection method.
@@ -91,7 +100,8 @@ public class CarScratch {
         showAll(cars);
         showAll(getCarsByCriteria(cars,Car.getRedCarCriteria()));
         showAll(getCarsByCriteria(cars,Car.getGasLevelCarCriteria(4)));
-        //cars.sort(new PassengerCountOrder());
+        cars.sort( Car.getGasLevelOrderComparator());
         showAll(cars);
+        showAll(getCarsByCriteria(cars,Car.getFourPassengerCarCriteria()));
     }
 }

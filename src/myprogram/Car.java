@@ -2,6 +2,7 @@ package myprogram;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
  class Car {
@@ -58,14 +59,19 @@ import java.util.List;
      public static CarCriteria getRedCarCriteria(){
          return  RED_CAR_CRITERIA;
      }
-     private static final CarCriteria RED_CAR_CRITERIA=new CarCriteria(){
-    // private static class RedCarCarCriteria implements CarCriteria {
+     public static CarCriteria getFourPassengerCarCriteria(){
+         return c -> c.getPassengers().size()==4;
+     }
+     private static final CarCriteria RED_CAR_CRITERIA= (Car c)->  c.color.equals("Red");
 
-         @Override
-         public boolean test(Car c) {
-             return c.color.equals("Red");
-         }
-     };
+//     private static final CarCriteria RED_CAR_CRITERIA=new CarCriteria(){
+//         // private static class RedCarCarCriteria implements CarCriteria {
+//
+//         @Override
+//         public boolean test(Car c) {
+//             return c.color.equals("Red");
+//         }
+//     };
 //     private static final RedCarCarCriteria RED_CAR_CRITERIA=new RedCarCarCriteria();
 //     private static class RedCarCarCriteria implements CarCriteria {
 //
@@ -88,5 +94,20 @@ import java.util.List;
          public boolean test(Car c) {
              return c.gasLevel>=threshold;
          }
+
      }
+
+     public static Comparator<Car> getGasLevelOrderComparator(){
+         return GAS_LEVEL_ORDER_COMPARATOR;
+     }
+     private  static final Comparator<Car> GAS_LEVEL_ORDER_COMPARATOR=(o1,o2)->  o1.getGasLevel() - o2.getGasLevel();
+
+     //private static final  Comparator<Car> GAS_LEVEL_ORDER_COMPARATOR=new Comparator<Car>() {
+
+//         //private static class  GasLevelOrderComparator implements Comparator<Car> {
+//         @Override
+//         public int compare(Car o1, Car o2) {
+//             return o1.getGasLevel() - o2.getGasLevel();
+//         }
+//     };
 }

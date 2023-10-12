@@ -56,13 +56,13 @@ import java.util.List;
     /*
     we have moved criterion method in Car class since they are related to Car object. We have declared this classes as static since criteria is related as a concept to a class Car amd not to particular car instance
      */
-     public static CarCriteria getRedCarCriteria(){
+     public static Criteria getRedCarCriteria(){
          return  RED_CAR_CRITERIA;
      }
-     public static CarCriteria getFourPassengerCarCriteria(){
+     public static Criteria<Car> getFourPassengerCarCriteria(){
          return c -> c.getPassengers().size()==4;
      }
-     private static final CarCriteria RED_CAR_CRITERIA= (Car c)->  c.color.equals("Red");
+     private static final Criteria<Car> RED_CAR_CRITERIA= (Car c)->  c.color.equals("Red");
 
 //     private static final CarCriteria RED_CAR_CRITERIA=new CarCriteria(){
 //         // private static class RedCarCarCriteria implements CarCriteria {
@@ -80,13 +80,13 @@ import java.util.List;
 //             return c.color.equals("Red");
 //         }
 //     }
-     public static CarCriteria getGasLevelCarCriteria(int threshold){
-         return new GasLevelCarCarCriteria(threshold);
+     public static Criteria getGasLevelCarCriteria(int threshold){
+         return new GasLevelCarCriteria(threshold);
      }
-     private static class GasLevelCarCarCriteria implements CarCriteria {
+     private static class GasLevelCarCriteria implements Criteria<Car> {
          private int  threshold;
 
-         public GasLevelCarCarCriteria(int threshold) {
+         public GasLevelCarCriteria(int threshold) {
              this.threshold = threshold;
          }
 

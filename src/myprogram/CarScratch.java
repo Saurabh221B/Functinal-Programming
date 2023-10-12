@@ -24,8 +24,8 @@ class PassengerCountOrder implements Comparator<Car>{
 Now it is possible for the caller to pass specific filtering mechanism impl to our selection method.
  */
 
-interface CarCriteria {
-  boolean test(Car c);
+interface Criteria<E> {
+  boolean test(E c);
 }
 //class RedCarCriteria implements Criteria{
 //
@@ -49,15 +49,15 @@ interface CarCriteria {
 
 
 public class CarScratch {
-    public static void showAll(List<Car> ls){
-        for(Car c : ls){
+    public static <E>void showAll(List<E> ls){
+        for(E c : ls){
             System.out.println(c);
         }
         System.out.println("-------------------------------------");
     }
-    public static List<Car> getCarsByCriteria(Iterable<Car>in, CarCriteria cr){
-        List<Car>output=new ArrayList<>();
-        for(Car c : in){
+    public static <E>List<E> getByCriteria(Iterable<E>in, Criteria<E> cr){
+        List<E>output=new ArrayList<>();
+        for(E c : in){
             //Here decison making is based on object(wrapping the behaviour needed to take desicion) criteria which is pass by caller as argument
             if(cr.test(c)){
                 output.add(c);
@@ -98,10 +98,10 @@ public class CarScratch {
 	// write your code here
 
         showAll(cars);
-        showAll(getCarsByCriteria(cars,Car.getRedCarCriteria()));
-        showAll(getCarsByCriteria(cars,Car.getGasLevelCarCriteria(4)));
+        showAll(getByCriteria(cars,Car.getRedCarCriteria()));
+        showAll(getByCriteria(cars,Car.getGasLevelCarCriteria(4)));
         cars.sort( Car.getGasLevelOrderComparator());
         showAll(cars);
-        showAll(getCarsByCriteria(cars,Car.getFourPassengerCarCriteria()));
+        showAll(getByCriteria(cars,Car.getFourPassengerCarCriteria()));
     }
 }

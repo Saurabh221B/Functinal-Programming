@@ -2,6 +2,7 @@ package myprogram;
 
 
 import java.util.*;
+import java.util.function.Predicate;
 
 class PassengerCountOrder implements Comparator<Car>{
 
@@ -24,9 +25,9 @@ class PassengerCountOrder implements Comparator<Car>{
 Now it is possible for the caller to pass specific filtering mechanism impl to our selection method.
  */
 
-interface Criteria<E> {
-  boolean test(E c);
-}
+//interface Criteria<E> {
+//  boolean test(E c);
+//}
 //class RedCarCriteria implements Criteria{
 //
 //    @Override
@@ -55,7 +56,7 @@ public class CarScratch {
         }
         System.out.println("-------------------------------------");
     }
-    public static <E>List<E> getByCriteria(Iterable<E>in, Criteria<E> cr){
+    public static <E>List<E> getByCriteria(Iterable<E>in, Predicate<E> cr){
         List<E>output=new ArrayList<>();
         for(E c : in){
             //Here decison making is based on object(wrapping the behaviour needed to take desicion) criteria which is pass by caller as argument
@@ -104,8 +105,11 @@ public class CarScratch {
 //        showAll(cars);
 //        showAll(getByCriteria(cars,Car.getFourPassengerCarCriteria()));
 //        showAll(getByCriteria(cars,Car.getGasLevelCarCriteria(4)));
-        Criteria<Car> redCarCriteria=Car.getRedCarCriteria();
-       showAll(getByCriteria(cars,Car.negate(redCarCriteria)));
-        showAll(getByCriteria(cars,Car.or(c->c.getColor().equals("Red"),c -> c.getColor().equals("Black"))));
+        Predicate<Car> redCarCriteria=Car.getRedCarCriteria();
+        Predicate<Car> blackCarCriteria=c -> c.getColor().equals("Black");
+
+        showAll(getByCriteria(cars,redCarCriteria.or(blackCarCriteria).negate()));
+       //showAll(getByCriteria(cars,Criteria.negate(redCarCriteria)));
+        //showAll(getByCriteria(cars,Criteria.or(c->c.getColor().equals("Red"),c -> c.getColor().equals("Black"))));
     }
 }

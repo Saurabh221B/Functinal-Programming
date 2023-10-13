@@ -1,6 +1,7 @@
 package myprogram;
 
 import java.util.*;
+import java.util.function.*;
 
 class Car {
     private final int gasLevel;
@@ -53,29 +54,29 @@ class Car {
     /*
     we have moved criterion method in Car class since they are related to Car object. We have declared this classes as static since criteria is related as a concept to a class Car amd not to particular car instance
      */
-     public static Criteria getRedCarCriteria(){
+     public static Predicate getRedCarCriteria(){
          return  RED_CAR_CRITERIA;
      }
-     private static final Criteria<Car> RED_CAR_CRITERIA= (Car c)->  c.color.equals("Red");
-     public static Criteria<Car> getFourPassengerCarCriteria(){
+     private static final Predicate<Car> RED_CAR_CRITERIA= (Car c)->  c.color.equals("Red");
+     public static Predicate<Car> getFourPassengerCarCriteria(){
          return c -> c.getPassengers().size()==4;
      }
-     public static Criteria<Car> getColorCriteria(String...color){
+     public static Predicate<Car> getColorCriteria(String...color){
          HashSet<String>colorSet=new HashSet<>(Arrays.asList(color));
          return  c -> colorSet.contains(c.color);
      }
      //trying to derive new behavior by passing existing one as an argument to method parameter
-    public static <E>Criteria<E> negate(Criteria<E> cri){
-        return  c ->!cri.test(c);
-    }
-    public static <E>Criteria<E> and(Criteria<E> first, Criteria<E> second){
-
-        return  c -> first.test(c) && second.test(c);
-    }
-    public static <E>Criteria<E> or(Criteria<E> first, Criteria<E> second){
-
-        return  c -> first.test(c) || second.test(c);
-    }
+//    public static <E>Criteria<E> negate(Criteria<E> cri){
+//        return  c ->!cri.test(c);
+//    }
+//    public static <E>Criteria<E> and(Criteria<E> first, Criteria<E> second){
+//
+//        return  c -> first.test(c) && second.test(c);
+//    }
+//    public static <E>Criteria<E> or(Criteria<E> first, Criteria<E> second){
+//
+//        return  c -> first.test(c) || second.test(c);
+//    }
 
 
 
@@ -111,7 +112,7 @@ class Car {
 //         }
 //
 //     }
-public static Criteria<Car> getGasLevelCarCriteria(int threshold) {
+public static Predicate<Car> getGasLevelCarCriteria(int threshold) {
     return (c) -> c.gasLevel >= threshold;
     //variable used in lamda expression for example int threshhld in this case shoud be final..
         }
